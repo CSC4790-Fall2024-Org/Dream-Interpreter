@@ -30,9 +30,7 @@ genai.configure(api_key=apiKey)
     
 model = genai.GenerativeModel('gemini-pro')
 
-
 response = model.generate_content("I had a dream I fell off my bike and failed my test. What is the interpretation of this dream?")
 
-
-
 print(response.text)
+
