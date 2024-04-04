@@ -10,7 +10,11 @@ Description: Establish a connection to Gemini and use it to send/receive user in
 
 import google.generativeai as genai
 
-apiKey = ''
+apiKey = 'AIzaSyDuyyriBGoGjTwGjLYhMS3B1SG3tTUkqLk'
 genai.configure(api_key=apiKey)
+
+
+gemini_model = genai.GenerativeModel('gemini-pro')
+        
 
 
