@@ -15,6 +15,10 @@ from abstraction import AI_test_model
 
 #Initialize top of web application.
 st.title("🌙☁️Welcome to the Dream Interpreter ☁️🌙")
+
+categories = ("General","Positive","Negative","Nightmare","Success","Failure")
+selected_category = st.selectbox("Select the theme for your dream interpreation:",categories)
+
 user_input=st.text_input("Enter your dream here:")
 st.write("Your dream description: \t\t"+ user_input)
 
