@@ -32,7 +32,7 @@ def generate_animation_link(dream_input):
     assert response.ok, response.content
 
     result = response.json()
-    return result['url']
+    return result['output_video']
 
 # link = generate_animation_link('i had a bad day')
 # print(link)
