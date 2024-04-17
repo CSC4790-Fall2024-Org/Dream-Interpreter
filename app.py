@@ -17,9 +17,9 @@ from abstraction import AI_test_model, generate_video
 st.title("🌙☁️Welcome to the Dream Interpreter ☁️🌙")
 
 categories = ("General","Positive","Negative","Nightmare","Success","Failure")
-selected_category = st.selectbox("Select the theme for your dream interpreation:",categories)
+selected_category = st.selectbox("Select the theme for your dream interpreation:",categories,index=None,placeholder='Seleect theme...')
 
-user_input=st.text_input("Enter your dream here:")
+user_input=st.text_input("Enter your dream here:")s
 st.write("Your dream description: \t\t"+ user_input)
 
 #Generate User Dream Interpretation and display on app.
