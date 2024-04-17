@@ -13,6 +13,8 @@ api_key ='sk-duhSgEZDF8nhRmX2THLwCzFog3UKeeUcYJm9YR4Lhw8Hffn9'
 
 
 def generate_animation_link(dream_input):
+    #The below code is slightly modified from the source code from Gooey.ai at:
+    #https://gooey.ai/animation-generator/api/?run_id=dginy85aa465&uid=QVDCBEYxX5d1xuGe7myRYxwj6NX2
     payload = {
         "animation_prompts": [
             {
@@ -21,7 +23,6 @@ def generate_animation_link(dream_input):
             }
         ]
     }
-
     response = requests.post(
         "https://api.gooey.ai/v2/DeforumSD/",
         headers={
