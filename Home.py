@@ -44,17 +44,17 @@ if st.checkbox("I understand this is AI-generated and for entertainment only."):
         response = AI_test_model.generate_content("Please interpret the following dream: " + user_input)
         st.toast('Your dream was interpreted!', icon='🫡')
         st.write(response.text)
+        st.download_button(
+            label="Download Your Dream Interpretation",
+            data= response.text ,
+            file_name="dream_interpretation.txt",
+            mime="text/plain"
+        )
         
 else:
     st.write('Check the box above if you want to proceed with generating an interpretation.')
     
-if response :
-    st.download_button(
-        label="Download Your Dream Interpretation",
-        data= response.text ,
-        file_name="dream_interpretation.txt",
-        mime="text/plain"
-    )
+
 
 
 
