@@ -34,21 +34,17 @@ gemini_model = genai.GenerativeModel('gemini-pro')
     
 #     ai_Interpretation = gemini_model.generate(user_input)
     
-<<<<<<< HEAD
-    if user_input == '': # If no input by user 
-        print("Try again...")
-        continue
+if user_input == '': # If no input by user 
+    print("Try again...")
+    continue
     
-    ai_Interpretation = gemini_model.generate(user_input) #Need to find a way to add prompts into this
-    print("Here's what the AI thinks: ", ai_Interpretation)
-=======
+ai_Interpretation = gemini_model.generate(user_input) #Need to find a way to add prompts into this
+print("Here's what the AI thinks: ", ai_Interpretation)
     
->>>>>>> 120f4207696c34415828489f5147e339cc33e281
-    
-    user_feedback = input("Was this helpful? yes or no:")
-    if user_feedback.lower() == 'yes':
+user_feedback = input("Was this helpful? yes or no:")
+if user_feedback.lower() == 'yes':
         log_positive_feedback #to make gemini learn from previous interpretations
-    if user_feedback.lower() == 'no':
+if user_feedback.lower() == 'no':
         log_negative_feedback # 
     
 
