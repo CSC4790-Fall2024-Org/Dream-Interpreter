@@ -13,13 +13,21 @@ Description: Front-end code for user interface.
 
 import streamlit as st
 from abstraction import AI_test_model, generate_video
-#new comment
+
+#Page Configuration
+st.set_page_config(
+    page_title="Home - General Interpretation",
+    page_icon="🌙",
+)
+
+#Sidebar Initialization
+st.sidebar.success("Select a page above.")
 
 #Initialize top of web application.
 st.title("🌙☁️Welcome to the Dream Interpreter ☁️🌙")
 
 categories = ("General","Positive","Negative","Nightmare","Success","Failure")
-selected_category = st.selectbox("Select the theme for your dream interpreation:",categories,index=None,placeholder='Seleect theme...')
+selected_category = st.selectbox("Select the theme for your dream interpreation:",categories,index=None,placeholder='Select theme...')
 
 user_input=st.text_input("Enter your dream here:")
 st.write("Your dream description: \t\t"+ user_input)
@@ -35,12 +43,4 @@ else:
 
 
 
-st.title('Dream Animation Generator')
 
-#WARNING: Do not run the generate animation function since we only get 30 tries for free.
-user_animation_input=st.text_input("Enter a scene from your dream:")
-if st.button('Generate Dream Animation'):
-    # st.write('Animation Link:' + generate_video(user_animation_input))
-    pass
-else:
-    st.write('Dream animation pending')

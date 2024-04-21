@@ -12,7 +12,7 @@ Name: gooey_api_connection.py
 Description: Establish a connection to Gooey and use it to send/receive user input and animation link.
 
 """
-a
+
 import requests
 
 api_key ='sk-duhSgEZDF8nhRmX2THLwCzFog3UKeeUcYJm9YR4Lhw8Hffn9'
