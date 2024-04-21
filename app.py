@@ -3,13 +3,14 @@
 """
 Created on Thu Apr  4 12:56:41 2024
 
-@author: stevehalley
+Name: app.py
 
-#web_app.py
+@author: Team-12
 
-#Description: Front-end code for user interface. Used during testing phase of development.
+Description: Front-end code for user interface. 
 
 """
+
 import streamlit as st
 from abstraction import AI_test_model, generate_video
 #new comment

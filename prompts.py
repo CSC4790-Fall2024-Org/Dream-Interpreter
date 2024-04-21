@@ -3,7 +3,12 @@
 """
 Created on Thu Apr  4 13:08:19 2024
 
-@author: stevehalley
+Name: prompts.py
+
+@author: Team-12
+
+Description: Gather information from user.
+
 """
 class Prompts:     
     def ask_setting():
