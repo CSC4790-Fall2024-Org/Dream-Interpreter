@@ -42,6 +42,10 @@ with st.expander("User Manual / Help Guide"):
         Enjoy exploring the meanings of your dreams!
     """)
     
+# Disclaimer about Technology Used
+st.markdown("""
+**Powered by:** This application uses Gooey AI and Gemini AI technologies to analyze and generate dream interpretations.
+""")
 
 # Disclaimer about AI interpretation
 st.markdown("""
