@@ -48,7 +48,8 @@ if st.checkbox("I understand this is AI-generated and for entertainment only."):
 else:
     st.write('Check the box above if you want to proceed with generating an interpretation.')
     
-st.download_button(
+if response :
+    st.download_button(
         label="Download Your Dream Interpretation",
         data= response.text ,
         file_name="dream_interpretation.txt",
