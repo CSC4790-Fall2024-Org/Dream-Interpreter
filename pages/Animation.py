@@ -26,7 +26,7 @@ st.title('Dream Animation Generator')
 #WARNING: Do not run the generate animation function since we only get 30 tries for free.
 user_animation_input=st.text_input("Enter a scene from your dream:")
 if st.button('Generate Dream Animation'):
-    # st.write('Animation Link:' + generate_video(user_animation_input))
-    pass
+    st.write('Animation Link:' + generate_video(user_animation_input))
+    # pass
 else:
     st.write('Dream animation pending')

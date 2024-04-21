@@ -15,7 +15,7 @@ Description: Establish a connection to Gooey and use it to send/receive user inp
 
 import requests
 
-api_key ='sk-duhSgEZDF8nhRmX2THLwCzFog3UKeeUcYJm9YR4Lhw8Hffn9'
+api_key ='sk-YphiJP1mvUur1A1gQdCXB9zQNoI46UpnGB5VtbnxNA1kagZD'
 
 
 
@@ -40,10 +40,8 @@ def generate_animation_link(dream_input):
     assert response.ok, response.content
 
     result = response.json()
-    return result['output_video']
+    return result['output']['output_video']
 
-# link = generate_animation_link('i had a bad day')
-# print(link)
 
 
 
