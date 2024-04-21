@@ -21,7 +21,7 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
-st.image('gemini.png')  
+st.image('/gemini.png')  
 
 #Sidebar Initialization
 st.sidebar.success("Select a page above.")
@@ -47,6 +47,7 @@ st.download_button(
         file_name="dream_interpretation.txt",
         mime="text/plain"
     )
+
 
 
 

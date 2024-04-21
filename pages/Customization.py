@@ -22,7 +22,7 @@ st.sidebar.header("Customer Interpretation")
 
 st.title('Customized Dream Interpreter')
 
-st.image('gemini.png')  
+st.image('/gemini.png')  
         
 categories = ("General","Positive","Negative","Nightmare","Success","Failure")
 selected_category = st.selectbox("Select the theme for your dream interpreation:",categories,index=None,placeholder='Select theme...')
