@@ -35,11 +35,12 @@ emotions = st.text_input(Prompts.ask_emotions())
 actions = st.text_input(Prompts.ask_actions())
 symbols = st.text_input(Prompts.ask_symbols())
 experiences = st.text_input(Prompts.ask_experiences())
+physical = st.text_input(Prompts.ask_physical())
 
 
 if st.checkbox("I understand this is AI-generated and for entertainment only."):
     if st.button('Generate Dream Interpretation'):
-        response = AI_test_model.generate_content(custom_interpretation(selected_category,setting,characters,emotions,actions,symbols,experiences))
+        response = AI_test_model.generate_content(custom_interpretation(selected_category,setting,characters,emotions,actions,symbols,experiences,physical))
         st.toast('Your dream was interpreted!', icon='🫡')
         st.write(response.text)      
 else:

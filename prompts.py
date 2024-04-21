@@ -28,9 +28,12 @@ class Prompts:
     def ask_experiences():
         return "Was the dream familiar or related to any real life experiences?"
     
-def custom_interpretation(theme,setting,chars,emotions,acts,symbols,exps):
+    def ask_physical():
+        return "Did you feel anything physically during / after the dream?"
     
-    return f"Please interpret a dream that consists of the following information: Theme: {theme}, Setting: {setting}, Characters: {chars}, Emotions: {emotions}, Acts: {acts},Symbols:{symbols}, Experiences:{exps}"
+def custom_interpretation(theme,setting,chars,emotions,acts,symbols,exps,phy):
+    
+    return f"Please interpret a dream that consists of the following information: Theme: {theme}, Setting: {setting}, Characters: {chars}, Emotions: {emotions}, Acts: {acts},Symbols:{symbols}, Experiences:{exps}, Physical{phy}"
     
    
 #Test
