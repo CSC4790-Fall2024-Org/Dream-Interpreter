@@ -20,8 +20,7 @@ st.set_page_config(
     page_icon="🌙",
     initial_sidebar_state="auto"
 )
-
-#st.image('/gemini.png')  
+ 
 
 #Sidebar Initialization
 st.sidebar.success("Select a page above.")

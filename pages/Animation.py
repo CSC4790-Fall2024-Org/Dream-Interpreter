@@ -21,7 +21,7 @@ st.sidebar.header("Animation generation")
 
 st.title('Dream Animation Generator')
 
-#st.image('gooey.png')  
+ 
 
 #WARNING: Do not run the generate animation function since we only get 30 tries for free.
 user_animation_input=st.text_input("Enter a scene from your dream:")
