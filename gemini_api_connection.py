@@ -15,6 +15,22 @@ genai.configure(api_key=apiKey)
 
 
 gemini_model = genai.GenerativeModel('gemini-pro')
-        
+
+while True:
+    
+    user_input = input("Describe your dream in detail or enter 'exit'").strip()
+    
+    if user_input.lower() == 'exit':
+        print("Exiting...")
+        break
+    
+    if user_input == '':
+        print("Try again...")
+        continue
+    
+    ai_Interpretation = gemini_model.generate(user_input)
+    
+
+    
 
 
