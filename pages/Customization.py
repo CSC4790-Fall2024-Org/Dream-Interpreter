@@ -37,16 +37,16 @@ symbols = st.text_input(Prompts.ask_symbols())
 experiences = st.text_input(Prompts.ask_experiences())
 
 
-
-if st.button('Generate Dream Interpretation'):
-    response = AI_test_model.generate_content(custom_interpretation(selected_category,setting,characters,emotions,actions,symbols,experiences))
-    st.toast('Your dream was interpreted!', icon='🫡')
-    st.write(response.text)
-    
+if st.checkbox("I understand this is AI-generated and for entertainment only."):
+    if st.button('Generate Dream Interpretation'):
+        response = AI_test_model.generate_content(custom_interpretation(selected_category,setting,characters,emotions,actions,symbols,experiences))
+        st.toast('Your dream was interpreted!', icon='🫡')
+        st.write(response.text)      
 else:
-    st.write('Please click button for interpretation')
-    
-st.download_button(
+    st.write('Check the box above if you want to proceed with generating an interpretation.')
+       
+if response :
+    st.download_button(
         label="Download Your Dream Interpretation",
         data= response.text ,
         file_name="dream_interpretation.txt",
