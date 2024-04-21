@@ -12,6 +12,7 @@ from abstraction import AI_test_model, generate_video
 
 
 st.set_page_config(page_title="Animation Generation", page_icon="📹")
+
 st.sidebar.header("Animation generation")
 
 
