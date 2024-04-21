@@ -1,38 +1,46 @@
-import time
 import unittest
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.service import Service
-#from webdriver_manager.chrome import ChromeDriverManager
+from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
-class TestDreamInterpreter(unittest.TestCase):
+class TestDreamInterpreterApp(unittest.TestCase):
 
     def setUp(self):
-        """ Setup the test driver and create test variables """
-        #self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
-        self.driver.get("http://localhost:8501")  # Make sure your Streamlit app is running on this port
+        """Set up the test driver and navigate to the app."""
+        self.driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+        self.driver.get("http://localhost:8501") 
 
-    def test_dream_interpreter(self):
-        """ Test entering a dream and generating an interpretation """
+    def test_interpretation_flow(self):
         driver = self.driver
-        dream_input = driver.find_element(By.XPATH, '//input[@placeholder="Enter your dream here:"]')
-        dream_input.send_keys('I was flying over mountains with dragons.')
+        wait = WebDriverWait(driver, 10)
+
+        # Input a dream description
+        dream_input = wait.until(EC.element_to_be_clickable((By.XPATH, '//input[@placeholder="Enter your dream here:"]')))
+        dream_input.send_keys('I dreamed about flying over the ocean.')
         dream_input.send_keys(Keys.RETURN)
 
-        # Click the generate button
-        generate_button = driver.find_element(By.XPATH, '//button[text()="Generate Dream Interpretation"]')
+        # Check the acknowledgment checkbox
+        checkbox = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'input[type="checkbox"]')))
+        checkbox.click()
+
+        # Click the "Generate Dream Interpretation" button
+        generate_button = wait.until(EC.element_to_be_clickable((By.XPATH, '//button[text()="Generate Dream Interpretation"]')))
         generate_button.click()
 
-        # Wait for response to ensure the interpretation is generated
-        time.sleep(5)  # Adjust the sleep time based on the response time of your app
+        # Check for the interpretation result
+        result = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, 'div.stMarkdown')))
+        self.assertTrue('Your dream was interpreted!' in driver.page_source)
 
-        # Check for download button presence
-        download_button = driver.find_element(By.XPATH, '//button[@download]')
+        # Check if the download button is displayed
+        download_button = wait.until(EC.visibility_of_element_located((By.XPATH, '//button[@download]')))
         self.assertTrue(download_button.is_displayed())
 
     def tearDown(self):
-        """ Tear down the test environment """
+        """Tear down the test environment."""
         self.driver.quit()
 
 if __name__ == "__main__":
