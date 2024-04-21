@@ -3,7 +3,10 @@
 """
 Created on Sun Apr 21 08:58:00 2024
 
-@author: stevehalley
+@author: Team-12
+
+Description: Separate page to generate a customized dream interpretation.
+
 """
 
 import streamlit as st

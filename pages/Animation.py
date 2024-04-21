@@ -3,7 +3,10 @@
 """
 Created on Sun Apr 21 08:57:48 2024
 
-@author: stevehalley
+@author: Team-12
+
+Description: Separate page to generate a simple animation relating to the user's dream.
+
 """
 
 import streamlit as st
