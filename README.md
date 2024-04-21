@@ -17,8 +17,11 @@
 
 3. Testing
    dowload command : pip install selenium
+   
    download command : pip install webdriver-manager
+   
 Explanation:
+
 Navigating to the app's URL.
 Entering text into the input field.
 Checking the acknowledgment checkbox.
