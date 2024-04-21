@@ -24,13 +24,18 @@ while True:
         print("Exiting...")
         break
     
-    if user_input == '':
+    if user_input == '': # If no input by user 
         print("Try again...")
         continue
     
-    ai_Interpretation = gemini_model.generate(user_input)
+    ai_Interpretation = gemini_model.generate(user_input) #Need to find a way to add prompts into this
+    print("Here's what the AI thinks: ", ai_Interpretation)
     
-
+    user_feedback = input("Was this helpful? yes or no:")
+    if user_feedback.lower() == 'yes':
+        log_positive_feedback #to make gemini learn from previous interpretations
+    if user_feedback.lower() == 'no':
+        log_negative_feedback # 
     
 
 
