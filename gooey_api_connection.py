@@ -15,7 +15,7 @@ Description: Establish a connection to Gooey and use it to send/receive user inp
 
 import requests
 
-api_key ='sk-duhSgEZDF8nhRmX2THLwCzFog3UKeeUcYJm9YR4Lhw8Hffn9'
+api_key ='sk-YphiJP1mvUur1A1gQdCXB9zQNoI46UpnGB5VtbnxNA1kagZD'
 
 
 
