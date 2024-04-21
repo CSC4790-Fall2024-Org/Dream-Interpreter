@@ -21,7 +21,9 @@ st.sidebar.header("Customer Interpretation")
 
 
 st.title('Customized Dream Interpreter')
-         
+
+st.image('gemini.png')  
+        
 categories = ("General","Positive","Negative","Nightmare","Success","Failure")
 selected_category = st.selectbox("Select the theme for your dream interpreation:",categories,index=None,placeholder='Select theme...')
 
@@ -40,5 +42,13 @@ if st.button('Generate Dream Interpretation'):
     response = AI_test_model.generate_content(custom_interpretation(selected_category,setting,characters,emotions,actions,symbols,experiences))
     st.toast('Your dream was interpreted!', icon='🫡')
     st.write(response.text)
+    
 else:
     st.write('Please click button for interpretation')
+    
+st.download_button(
+        label="Download Your Dream Interpretation",
+        data= response.text ,
+        file_name="dream_interpretation.txt",
+        mime="text/plain"
+    )

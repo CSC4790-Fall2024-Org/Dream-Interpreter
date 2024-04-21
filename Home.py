@@ -21,6 +21,8 @@ st.set_page_config(
     initial_sidebar_state="auto"
 )
 
+st.image('gemini.png')  
+
 #Sidebar Initialization
 st.sidebar.success("Select a page above.")
 
@@ -38,6 +40,13 @@ if st.button('Generate Dream Interpretation'):
     st.write(response.text)
 else:
     st.write('Please click button for interpretation')
+    
+st.download_button(
+        label="Download Your Dream Interpretation",
+        data= response.text ,
+        file_name="dream_interpretation.txt",
+        mime="text/plain"
+    )
 
 
 
