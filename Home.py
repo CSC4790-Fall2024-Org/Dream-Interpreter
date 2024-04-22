@@ -3,7 +3,7 @@
 """
 Created on Thu Apr  4 12:56:41 2024
 
-Name: app.py
+Name: Home.py
 
 @author: Team-12
 
@@ -61,7 +61,7 @@ if st.checkbox("I understand this is AI-generated and for entertainment only."):
         response = AI_test_model.generate_content("Please interpret the following dream: " + user_input)
         st.toast('Your dream was interpreted!', icon='🫡')
         st.write(response.text)
-    
+        #Option for user to download interpretation
         st.download_button(
         label="Download Your Dream Interpretation",
         data= response.text ,

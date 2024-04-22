@@ -13,12 +13,9 @@ import streamlit as st
 from abstraction import AI_test_model, generate_video
 
 
-
+#Page configuration
 st.set_page_config(page_title="Animation Generation", page_icon="📹")
-
 st.sidebar.header("Animation generation")
-
-
 st.title('Dream Animation Generator')
 
  
