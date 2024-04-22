@@ -20,13 +20,17 @@
    
    download command : pip install webdriver-manager
    
-Explanation:
-
-Navigating to the app's URL.
-Entering text into the input field.
-Checking the acknowledgment checkbox.
-Clicking the "Generate Dream Interpretation" button.
-Checking if the result is displayed and the download button is available.
+      Explanation:
+      
+      Navigating to the app's URL.
+      
+      Entering text into the input field.
+      
+      Checking the acknowledgment checkbox.
+      
+      Clicking the "Generate Dream Interpretation" button.
+      
+      Checking if the result is displayed and the download button is available.
 
 **To run streamlit app on local device:**
   - Install Python StreamLit Library
