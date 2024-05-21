@@ -7,7 +7,7 @@
 
    installation guide: https://docs.streamlit.io/get-started/installation
 
-3. google-generativeai
+2. google-generativeai
 
    link: https://ai.google.dev/
 
@@ -15,6 +15,22 @@
 
    installation guide: https://ai.google.dev/tutorials/python_quickstart#advanced_use_cases
 
+3. Testing
+   dowload command : pip install selenium
+   
+   download command : pip install webdriver-manager
+   
+      Explanation:
+      
+      Navigating to the app's URL.
+      
+      Entering text into the input field.
+      
+      Checking the acknowledgment checkbox.
+      
+      Clicking the "Generate Dream Interpretation" button.
+      
+      Checking if the result is displayed and the download button is available.
 
 **To run streamlit app on local device:**
   - Install Python StreamLit Library
