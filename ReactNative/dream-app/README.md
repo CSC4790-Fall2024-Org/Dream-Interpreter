@@ -6,6 +6,7 @@ This is an [Expo](https://expo.dev) project created with [`create-expo-app`](htt
 
 1. Install dependencies
 
+   brew install node
    ```bash
    npm install
    ```
