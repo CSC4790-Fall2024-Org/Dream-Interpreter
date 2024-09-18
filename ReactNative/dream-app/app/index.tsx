@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert, CheckBox } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
+import CheckBox from '@react-native-community/checkbox';
 import { geminiModel, generateVideo } from "../scripts/api-abstraction.js"; 
 
 export default function Index() {
