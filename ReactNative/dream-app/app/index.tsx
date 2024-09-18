@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert, CheckBox } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
+import Checkbox from 'expo-checkbox';
+
 import { geminiModel, generateVideo } from "../scripts/api-abstraction.js";
 
 export default function Index() {
@@ -156,7 +158,7 @@ export default function Index() {
         <Text>I understand this is AI-generated and for entertainment only.</Text>
       </View>
 
-      
+
     </ScrollView>
   );
 }
