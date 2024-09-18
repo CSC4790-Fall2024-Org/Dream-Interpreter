@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
-import CheckBox from '@react-native-community/checkbox';
+import Checkbox from 'expo-checkbox';
 import { geminiModel, generateVideo } from "../scripts/api-abstraction.js"; 
 
 export default function Index() {
@@ -74,7 +74,7 @@ export default function Index() {
 
       {/* Disclaimer Checkbox */}
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-        <CheckBox
+        <Checkbox
           value={disclaimerChecked}
           onValueChange={setDisclaimerChecked}
         />
