@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { generateAnimationLink } from './gooey-api'; 
+import { GooeyAPIConnection } from './gooey-api'; 
 
 export const geminiModel = async (prompt) => {
   const genAI = new GoogleGenerativeAI('AIzaSyAcesEJt1QoKgOQ3LNbE3hRon4I0dm9bU8');
@@ -16,7 +16,7 @@ export const geminiModel = async (prompt) => {
 
 export const generateVideo = async (dreamInput) => {
   try {
-    return await generateAnimationLink(dreamInput);
+    return await GooeyAPIConnection.generateAnimationLink(dreamInput);
   } catch (error) {
     console.error('Error generating Gooey animation:', error);
     throw error;
