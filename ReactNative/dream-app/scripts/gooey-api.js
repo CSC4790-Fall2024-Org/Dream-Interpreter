@@ -3,8 +3,8 @@ import { View, Button, TextInput, Text } from 'react-native';
 
 const GooeyAPIConnection = () => {
   const [dreamInput, setDreamInput] = useState('');
-  const [animationLink, setAnimationLink] = useState(null);
-  const apiKey = 'sk-YphiJP1mvUur1A1gQdCXB9zQNoI46UpnGB5VtbnxNA1kagZD';
+  const [animationLink, setAnimationLink] = useState('');
+  const apiKey = 'sk-Yags7fDplAFlaVKBFqwzmDtS1oRiqdfoseoDMkCK3vChFAfM';
 
   const generateAnimationLink = async () => {
     const payload = {
