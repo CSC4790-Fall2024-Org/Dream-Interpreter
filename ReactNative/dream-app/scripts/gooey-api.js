@@ -18,7 +18,7 @@ const GooeyAPIConnection = () => {
 
     try {
       const response = await fetch('https://api.gooey.ai/v2/DeforumSD/', {
-        method: 'POST',
+        method: "POST",
         headers: {
           Authorization: `Bearer ${apiKey}`,
           'Content-Type': 'application/json',
