@@ -1,12 +1,11 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { model } from "./gemini-api";
 import { GooeyAPIConnection } from './gooey-api'; 
 
-export const geminiModel = async (prompt) => {
-  const genAI = new GoogleGenerativeAI('AIzaSyAcesEJt1QoKgOQ3LNbE3hRon4I0dm9bU8');
-  const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+export const textModel = async (prompt) => {
+  const textModel = model;
 
   try {
-    const result = await model.generateContent(prompt);
+    const result = await textModel.generateContent(prompt);
     return await result.response.text(); 
   } catch (error) {
     console.error('Error generating Gemini content:', error);

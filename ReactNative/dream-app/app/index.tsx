@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
 import Checkbox from "expo-checkbox";
-import { geminiModel, generateVideo } from "../scripts/api-abstraction.js";
+import { textModel, generateVideo } from "../scripts/api-abstraction.js";
 
 export default function Index() {
   const [geminiInput, setGeminiInput] = useState('');
@@ -29,7 +29,7 @@ export default function Index() {
     setIsLoading(true);
     try {
       const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
-      const content = await geminiModel(dreamPrompt);
+      const content = await textModel(dreamPrompt);
       setGeminiOutput(content);
     } catch (error) {
       console.error('Error generating Gemini content:', error);
