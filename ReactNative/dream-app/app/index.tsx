@@ -8,7 +8,7 @@ export default function Index() {
   const [geminiOutput, setGeminiOutput] = useState('');
 
   const [dreamInput, setDreamInput] = useState('');
-  const [animationLink, setAnimationLink] = useState(null);
+  const [animationLink, setAnimationLink] = useState('');
 
   const [disclaimerChecked, setDisclaimerChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
