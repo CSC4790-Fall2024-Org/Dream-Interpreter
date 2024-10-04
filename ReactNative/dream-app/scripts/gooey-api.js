@@ -1,7 +1,7 @@
 // import React, { useState } from 'react';
 // import { View, Button, TextInput, Text } from 'react-native';
 
-const apiKey = 'sk-Yags7fDplAFlaVKBFqwzmDtS1oRiqdfoseoDMkCK3vChFAfM';
+const apiKey = 'sk-w8ZLgpFSZKiqDSE1k4dbT7GcD0SU2Fp55xxurdcHkibWtJm6';
 
 export function generateAnimationLink(dreamInput) {
   const payload = {
@@ -17,7 +17,7 @@ export function generateAnimationLink(dreamInput) {
       const response = await fetch('https://api.gooey.ai/v2/DeforumSD/', {
         method: "POST",
         headers: {
-          'Authorization': `bearer sk-Yags7fDplAFlaVKBFqwzmDtS1oRiqdfoseoDMkCK3vChFAfM`,
+          'Authorization': `bearer sk-w8ZLgpFSZKiqDSE1k4dbT7GcD0SU2Fp55xxurdcHkibWtJm6`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
