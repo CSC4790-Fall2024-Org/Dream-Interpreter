@@ -1,55 +1,51 @@
-import React, { useState } from 'react';
-import { View, Button, TextInput, Text } from 'react-native';
+// import React, { useState } from 'react';
+// import { View, Button, TextInput, Text } from 'react-native';
 
-const GooeyAPIConnection = () => {
-  const [dreamInput, setDreamInput] = useState('');
-  const [animationLink, setAnimationLink] = useState(null);
-  const apiKey = 'sk-YphiJP1mvUur1A1gQdCXB9zQNoI46UpnGB5VtbnxNA1kagZD';
+const apiKey = 'sk-w8ZLgpFSZKiqDSE1k4dbT7GcD0SU2Fp55xxurdcHkibWtJm6';
 
-  const generateAnimationLink = async () => {
-    const payload = {
-      animation_prompts: [
-        {
-          frame: 0,
-          prompt: dreamInput,
-        },
-      ],
-    };
-
+export function generateAnimationLink(dreamInput) {
+  const payload = {
+    animation_prompts: [
+      {
+        frame: 0,
+        prompt: dreamInput,
+      },
+    ],
+  };
+  async function gooeyAPI(){
     try {
       const response = await fetch('https://api.gooey.ai/v2/DeforumSD/', {
-        method: 'POST',
+        method: "POST",
         headers: {
-          Authorization: `Bearer ${apiKey}`,
+          'Authorization': `bearer sk-w8ZLgpFSZKiqDSE1k4dbT7GcD0SU2Fp55xxurdcHkibWtJm6`,
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(payload),
       });
 
       if (!response.ok) {
-        throw new Error('API request failed');
+        throw new Error(response.status);
       }
 
       const result = await response.json();
-      setAnimationLink(result.output.output_video);
+      return result.output.output_video;
     } catch (error) {
       console.error('Error fetching animation link:', error);
     }
-  };
-
-  return (
-    <View>
-      <TextInput
-        placeholder="Enter your dream input"
-        value={dreamInput}
-        onChangeText={setDreamInput}
-      />
-      <Button title="Generate Animation" onPress={generateAnimationLink} />
-      {animationLink && (
-        <Text>Animation Link: {animationLink}</Text>
-      )}
-    </View>
-  );
+  }
+  return gooeyAPI();
 };
 
-export default GooeyAPIConnection;
+// return (
+//   <View>
+//     <TextInput
+//       placeholder="Enter your dream input"
+//       value={dreamInput}
+//       onChangeText={setDreamInput}
+//     />
+//     <Button title="Generate Animation" onPress={generateAnimationLink} />
+//     {animationLink && (
+//       <Text>Animation Link: {animationLink}</Text>
+//     )}
+//   </View>
+// );

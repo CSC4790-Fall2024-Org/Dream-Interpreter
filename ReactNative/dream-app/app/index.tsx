@@ -1,19 +1,22 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert, Linking } from "react-native";
 import Checkbox from "expo-checkbox";
-import { geminiModel, generateVideo } from "../scripts/api-abstraction.js";
+import { textModel, generateVideo } from "../scripts/api-abstraction.js";
+import { WebView } from 'react-native-webview';
+
 
 export default function Index() {
   const [geminiInput, setGeminiInput] = useState('');
   const [geminiOutput, setGeminiOutput] = useState('');
 
   const [dreamInput, setDreamInput] = useState('');
-  const [animationLink, setAnimationLink] = useState(null);
+  const [animationLink, setAnimationLink] = useState('');
 
   const [disclaimerChecked, setDisclaimerChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const [showUserManual, setShowUserManual] = useState(false); 
+  const [showWebView, setShowWebView] = useState(false); 
 
   const handleGemini = async () => {
     if (!disclaimerChecked) {
@@ -29,7 +32,7 @@ export default function Index() {
     setIsLoading(true);
     try {
       const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
-      const content = await geminiModel(dreamPrompt);
+      const content = await textModel(dreamPrompt);
       setGeminiOutput(content);
     } catch (error) {
       console.error('Error generating Gemini content:', error);
@@ -53,6 +56,7 @@ export default function Index() {
     try {
       const link = await generateVideo(dreamInput);
       setAnimationLink(link);
+      setShowWebView(true); 
     } catch (error) {
       console.error('Error generating Gooey animation:', error);
       Alert.alert("Error", "Failed to generate animation from Gooey API.");
@@ -153,7 +157,12 @@ export default function Index() {
         />
         <Button title={isLoading ? "Generating..." : "Generate Animation"} onPress={handleGooey} disabled={isLoading} />
         {animationLink ? (
-          <Text style={{ marginTop: 20 }}>Animation Link: {animationLink}</Text>
+          <Text style={{ marginTop: 20 }}>
+            Animation Link:
+            <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(animationLink)}>
+              Click here to view
+            </Text>
+          </Text>
         ) : null}
       </View>
     </ScrollView>
