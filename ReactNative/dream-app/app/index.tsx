@@ -90,7 +90,7 @@ export default function Index() {
       {/* Disclaimer about Technology Used */}
       <View style={{ marginTop: 40 }}>
         <Text style={{ fontSize: 18, fontWeight: "bold", color:'#C8A2C8' }}>Powered by:</Text>
-        <Text>This application uses Gooey AI and Gemini AI technologies for dream interpretations.</Text>
+        <Text>This application uses Gooey AI and Gemini AI for dream interpretations.</Text>
       </View>
 
       {/* Screen message */}
