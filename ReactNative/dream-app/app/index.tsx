@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert, Linking } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert, Linking, Image } from "react-native";
 import Checkbox from "expo-checkbox";
 // import { textModel, generateVideo } from "../scripts/api-abstraction.js";
 // import { WebView } from 'react-native-webview';
@@ -67,6 +67,21 @@ export default function Index() {
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       {/* Screen message */}
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        gap: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+      }}>
+        <Image source = {require('../assets/images/gooey-logo.png')} />
+        <Image 
+            source = {require('../assets/images/gemini-logo.png')}
+            style={{width: 128, height: 47}}
+        />
+      </View>
+
       <View style={{
         flex: 1,
         justifyContent: "center",
