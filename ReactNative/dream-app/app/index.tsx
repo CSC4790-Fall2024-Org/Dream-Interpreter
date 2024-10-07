@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useRouter } from 'expo-router';
-import { Text, View, Button, ScrollView } from "react-native";
+import { Text, View, Button, ScrollView, Image } from "react-native";
 //import { useNavigation } from '@react-navigation/native'; 
 // import Checkbox from "expo-checkbox";
 // import { textModel, generateVideo } from "../scripts/api-abstraction.js";
@@ -71,6 +71,22 @@ export default function Index() {
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       {/* Screen message */}
+      
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        gap: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+      }}>
+      <Image source = {require('../assets/images/gooey-logo.png')} />
+      <Image 
+          source = {require('../assets/images/gemini-logo.png')}
+          style={{width: 128, height: 47}}
+        />
+      </View>
+
       <View style={{
         flex: 1,
         justifyContent: "center",
