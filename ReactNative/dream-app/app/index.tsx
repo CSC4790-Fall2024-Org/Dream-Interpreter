@@ -1,93 +1,84 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert, Linking } from "react-native";
-import Checkbox from "expo-checkbox";
-import { textModel, generateVideo } from "../scripts/api-abstraction.js";
-import { WebView } from 'react-native-webview';
-
+import { useRouter } from 'expo-router';
+import { Text, View, Button, ScrollView, Image, Modal, TouchableOpacity, StyleSheet } from "react-native";
 
 export default function Index() {
-  const [geminiInput, setGeminiInput] = useState('');
-  const [geminiOutput, setGeminiOutput] = useState('');
-
-  const [dreamInput, setDreamInput] = useState('');
-  const [animationLink, setAnimationLink] = useState('');
-
-  const [disclaimerChecked, setDisclaimerChecked] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const [showUserManual, setShowUserManual] = useState(false); 
-  const [showWebView, setShowWebView] = useState(false); 
+  const router = useRouter();
+  const [modalVisible, setModalVisible] = useState(false);
 
-  const handleGemini = async () => {
-    if (!disclaimerChecked) {
-      Alert.alert("Disclaimer", "You need to accept the disclaimer to proceed.");
-      return;
-    }
-
-    if (geminiInput.trim() === '') {
-      Alert.alert("Input Required", "Please enter a prompt for Gemini.");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
-      const content = await textModel(dreamPrompt);
-      setGeminiOutput(content);
-    } catch (error) {
-      console.error('Error generating Gemini content:', error);
-      Alert.alert("Error", "Failed to generate content from Gemini API.");
-    }
-    setIsLoading(false);
-  };
-
-  const handleGooey = async () => {
-    if (!disclaimerChecked) {
-      Alert.alert("Disclaimer", "You need to accept the disclaimer to proceed.");
-      return;
-    }
-
-    if (dreamInput.trim() === '') {
-      Alert.alert("Input Required", "Please enter your dream description.");
-      return;
-    }
-
-    setIsLoading(true);
-    try {
-      const link = await generateVideo(dreamInput);
-      setAnimationLink(link);
-      setShowWebView(true); 
-    } catch (error) {
-      console.error('Error generating Gooey animation:', error);
-      Alert.alert("Error", "Failed to generate animation from Gooey API.");
-    }
-    setIsLoading(false);
+  const handleNavigate = (path: string) => {
+    setModalVisible(false); 
+    router.push(path);
   };
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
-      {/* Screen message */}
+      {/* Navigate to Pages Button */}
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={styles.button} 
+      >
+        <Text style={styles.buttonText}>All Pages</Text>
+      </TouchableOpacity>
+
+
+      {/* Modal for displaying page options */}
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}  
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Choose the page you want!</Text>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate("./")}>
+              <Text>Home Page</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gemini')}>
+              <Text>Textual Dream Interpretation Page</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gooey')}>
+              <Text>Visual Dream Interpretation Page</Text>
+            </TouchableOpacity>
+
+            <Button title="Close" onPress={() => setModalVisible(false)} />
+          </View>
+        </View>
+      </Modal>
+
       <View style={{
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
         marginBottom: 40,
       }}>
-        <Text>Welcome to your Nocturnal Navigator App!</Text>
+        <Text> </Text>
+        <Text>🌙Welcome to your Nocturnal Navigator App!🌙</Text>
+        <Text>🏠This is your Home Screen!🏠</Text>
       </View>
 
       {/* Toggle User Manual */}
-      <Button
-        title={showUserManual ? "Hide User Manual" : "Show User Manual"}
+      <TouchableOpacity
         onPress={() => setShowUserManual(!showUserManual)}
-      />
+        style={styles.button2} 
+      >
+        <Text style={styles.buttonText2}>
+          {showUserManual ? "Hide User Manual👆" : "Check User Manual👇"}
+        </Text>
+      </TouchableOpacity>
 
       {/* User Manual Section */}
       {showUserManual && (
         <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>User Manual</Text>
+          <Text style={{ fontWeight: "bold", fontSize: 18, color:'#C8A2C8' }}>User Manual:</Text>
           <Text>
-            We are so glad you are here! Here's how to use this application:
+            Here's how to use this application:
           </Text>
           <Text>1. Enter your dream description in the input field.</Text>
           <Text>2. Acknowledge the disclaimer by checking the checkbox.</Text>
@@ -98,73 +89,120 @@ export default function Index() {
 
       {/* Disclaimer about Technology Used */}
       <View style={{ marginTop: 40 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Powered by:</Text>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color:'#C8A2C8' }}>Powered by:</Text>
         <Text>This application uses Gooey AI and Gemini AI technologies for dream interpretations.</Text>
+      </View>
+
+      {/* Screen message */}
+      <View style={{
+        flex: 1,
+        flexDirection: 'row',
+        gap: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 5,
+      }}>
+        <Image source = {require('../assets/images/gooey-logo.png')} />
+        <Image 
+          source = {require('../assets/images/gemini-logo.png')}
+          style={{width: 128, height: 47}}
+        />
       </View>
 
       {/* AI Disclaimer */}
       <View style={{ marginTop: 20 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Disclaimer:</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold", color:'#C8A2C8' }}>Disclaimer:</Text>
         <Text>This interpretation is generated by AI and should be used for entertainment purposes only.</Text>
       </View>
 
-      {/* Disclaimer */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-        <Checkbox
-          value={disclaimerChecked}
-          onValueChange={setDisclaimerChecked}
-        />
-        <Text>I understand this is AI-generated and for entertainment only.</Text>
+      <View style={styles.interpretationContainer}>
+        <Text style={styles.normalText}>Get your dream </Text>
+        
+        {/* Button for "textually" */}
+        <TouchableOpacity onPress={() => handleNavigate('/gemini')}>
+          <Text style={styles.linkText}>textually</Text>
+        </TouchableOpacity>
+        
+        <Text style={styles.normalText}>, or </Text>
+        
+        {/* Button for "visually" */}
+        <TouchableOpacity onPress={() => handleNavigate('/gooey')}>
+          <Text style={styles.linkText}>visually</Text>
+        </TouchableOpacity>
+        
+        <Text style={styles.normalText}> interpreted!</Text>
       </View>
-
-      {/* Gemini API Section */}
-      <View>
-        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-          Gemini API - Generate Content
-        </Text>
-        <TextInput
-          placeholder="Enter your prompt for Gemini"
-          value={geminiInput}
-          onChangeText={setGeminiInput}
-          style={{
-            borderColor: "gray",
-            borderWidth: 1,
-            marginBottom: 10,
-            padding: 8,
-          }}
-        />
-        <Button title={isLoading ? "Generating..." : "Generate Content"} onPress={handleGemini} disabled={isLoading} />
-        {geminiOutput ? (
-          <Text style={{ marginTop: 20 }}>Generated Content: {geminiOutput}</Text>
-        ) : null}
-      </View>
-
-      {/* Gooey API Section */}
-      <View style={{ marginBottom: 40 }}>
-        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-          Gooey API - Generate Animation
-        </Text>
-        <TextInput
-          placeholder="Enter your dream input"
-          value={dreamInput}
-          onChangeText={setDreamInput}
-          style={{
-            borderColor: "gray",
-            borderWidth: 1,
-            marginBottom: 10,
-            padding: 8,
-          }}
-        />
-        <Button title={isLoading ? "Generating..." : "Generate Animation"} onPress={handleGooey} disabled={isLoading} />
-        {animationLink ? (
-          <Text style={{ marginTop: 20 }}>
-            Animation Link:
-            <Text style={{ color: 'blue' }} onPress={() => Linking.openURL(animationLink)}>
-              Click here to view
-            </Text>
-          </Text>
-        ) : null}
-      </View>
+      
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  modalContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    width: 300,
+    padding: 20,
+    backgroundColor: 'white',
+    borderRadius: 10,
+  },
+  modalTitle: {
+    fontSize: 18,
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  pageButton: {
+    padding: 10,
+    marginBottom: 10,
+    backgroundColor: '#ddd',
+    alignItems: 'center',
+    borderRadius: 5,
+  },
+  interpretationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  normalText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  linkText: {
+    fontSize: 16,
+    color: '#C8A2C8',
+    textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
+  container: {
+    padding: 20,
+  },
+  button: {
+    alignSelf: 'center', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  button2: {
+    alignSelf: 'flex-start', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18, 
+    color: 'white', 
+    fontWeight: 'bold',
+  },
+  buttonText2: {
+    fontSize: 15, 
+    color: 'white', 
+    fontWeight: 'bold',
+  },
+});

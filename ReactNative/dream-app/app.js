@@ -1,6 +1,5 @@
-import React from 'react';
-import Index from './app/index.tsx'; 
+import { ExpoRoot } from "expo-router";
 
 export default function App() {
-  return <Index />;
+  return <ExpoRoot />;
 }
