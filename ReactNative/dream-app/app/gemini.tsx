@@ -34,7 +34,6 @@ export default function GeminiInterpretation() {
     setIsLoading(false);
   };
 
-
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       {/* Screen message */}
