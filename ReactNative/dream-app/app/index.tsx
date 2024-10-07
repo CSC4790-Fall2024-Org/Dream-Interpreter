@@ -15,11 +15,14 @@ export default function Index() {
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
+      {/* Navigate to Pages Button */}
+      <TouchableOpacity
+        onPress={() => setModalVisible(true)}
+        style={styles.button} 
+      >
+        <Text style={styles.buttonText}>All Pages</Text>
+      </TouchableOpacity>
 
-      {/* Top Navigation Button */}
-      <View style={{ marginVertical: 20 }}>
-        <Button title="Navigate to Pages" onPress={() => setModalVisible(true)} />
-      </View>
 
       {/* Modal for displaying page options */}
       <Modal
@@ -30,24 +33,65 @@ export default function Index() {
       >
         <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
-            <Text style={styles.modalTitle}>Choose a Page</Text>
+            <Text style={styles.modalTitle}>Choose the page you want!</Text>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate("./")}>
-              <Text>Home</Text>
+              <Text>Home Page</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gemini')}>
-              <Text>Gemini</Text>
+              <Text>Textual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gooey')}>
-              <Text>Gooey</Text>
+              <Text>Visual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
             <Button title="Close" onPress={() => setModalVisible(false)} />
           </View>
         </View>
       </Modal>
+
+      <View style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        marginBottom: 40,
+      }}>
+        <Text> </Text>
+        <Text>🌙Welcome to your Nocturnal Navigator App!🌙</Text>
+        <Text>🏠This is your Home Screen!🏠</Text>
+      </View>
+
+      {/* Toggle User Manual */}
+      <TouchableOpacity
+        onPress={() => setShowUserManual(!showUserManual)}
+        style={styles.button2} 
+      >
+        <Text style={styles.buttonText2}>
+          {showUserManual ? "Hide User Manual👆" : "Check User Manual👇"}
+        </Text>
+      </TouchableOpacity>
+
+      {/* User Manual Section */}
+      {showUserManual && (
+        <View style={{ marginTop: 20, marginBottom: 20 }}>
+          <Text style={{ fontWeight: "bold", fontSize: 18, color:'#C8A2C8' }}>User Manual:</Text>
+          <Text>
+            Here's how to use this application:
+          </Text>
+          <Text>1. Enter your dream description in the input field.</Text>
+          <Text>2. Acknowledge the disclaimer by checking the checkbox.</Text>
+          <Text>3. Click on "Generate Dream Interpretation" to proceed.</Text>
+          <Text>4. You can view or download the generated interpretation.</Text>
+        </View>
+      )}
+
+      {/* Disclaimer about Technology Used */}
+      <View style={{ marginTop: 40 }}>
+        <Text style={{ fontSize: 18, fontWeight: "bold", color:'#C8A2C8' }}>Powered by:</Text>
+        <Text>This application uses Gooey AI and Gemini AI technologies for dream interpretations.</Text>
+      </View>
 
       {/* Screen message */}
       <View style={{
@@ -65,46 +109,9 @@ export default function Index() {
         />
       </View>
 
-      <View style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 40,
-      }}>
-        <Text>Welcome to your Nocturnal Navigator App!</Text>
-        <Text>This is your Home Screen!</Text>
-
-      </View>
-
-      {/* Toggle User Manual */}
-      <Button
-        title={showUserManual ? "Hide User Manual" : "Show User Manual"}
-        onPress={() => setShowUserManual(!showUserManual)}
-      />
-
-      {/* User Manual Section */}
-      {showUserManual && (
-        <View style={{ marginTop: 20, marginBottom: 20 }}>
-          <Text style={{ fontWeight: "bold", fontSize: 18 }}>User Manual</Text>
-          <Text>
-            We are so glad you are here! Here's how to use this application:
-          </Text>
-          <Text>1. Enter your dream description in the input field.</Text>
-          <Text>2. Acknowledge the disclaimer by checking the checkbox.</Text>
-          <Text>3. Click on "Generate Dream Interpretation" to proceed.</Text>
-          <Text>4. You can view or download the generated interpretation.</Text>
-        </View>
-      )}
-
-      {/* Disclaimer about Technology Used */}
-      <View style={{ marginTop: 40 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Powered by:</Text>
-        <Text>This application uses Gooey AI and Gemini AI technologies for dream interpretations.</Text>
-      </View>
-
       {/* AI Disclaimer */}
       <View style={{ marginTop: 20 }}>
-        <Text style={{ fontSize: 16, fontWeight: "bold" }}>Disclaimer:</Text>
+        <Text style={{ fontSize: 16, fontWeight: "bold", color:'#C8A2C8' }}>Disclaimer:</Text>
         <Text>This interpretation is generated by AI and should be used for entertainment purposes only.</Text>
       </View>
 
@@ -167,7 +174,35 @@ const styles = StyleSheet.create({
   },
   linkText: {
     fontSize: 16,
-    color: 'blue',
+    color: '#C8A2C8',
     textDecorationLine: 'underline',
+    fontWeight: 'bold',
+  },
+  container: {
+    padding: 20,
+  },
+  button: {
+    alignSelf: 'center', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  button2: {
+    alignSelf: 'flex-start', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18, 
+    color: 'white', 
+    fontWeight: 'bold',
+  },
+  buttonText2: {
+    fontSize: 15, 
+    color: 'white', 
+    fontWeight: 'bold',
   },
 });

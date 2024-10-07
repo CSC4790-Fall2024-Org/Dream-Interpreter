@@ -45,9 +45,13 @@ export default function GeminiInterpretation() {
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
-      <View style={{ marginVertical: 20 }}>
-          <Button title="Navigate to Pages" onPress={() => setModalVisible(true)} />
-      </View>
+      {/* Navigate to Pages Button */}
+      <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={styles.button} 
+          >
+            <Text style={styles.buttonText}>All Pages</Text>
+          </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -58,18 +62,18 @@ export default function GeminiInterpretation() {
       
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Choose a Page</Text>
+          <Text style={styles.modalTitle}>Choose the page you want!</Text>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./')}>
                <Text>Home</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gemini')}>
-               <Text>Gemini</Text>
+               <Text>Textual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gooey')}>
-                <Text>Gooey</Text>
+                <Text>Visual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
             <Button title="Close" onPress={() => setModalVisible(false)} />
@@ -94,13 +98,13 @@ export default function GeminiInterpretation() {
           value={disclaimerChecked}
           onValueChange={setDisclaimerChecked}
         />
-        <Text>I understand this is AI-generated and for entertainment only.</Text>
+        <Text> I fully acknowledge that this is for entertainment only!</Text>
       </View>
 
       {/* Gemini API Section */}
       <View>
-        <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
-          Gemini API - Generate Content
+        <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10, color:'#C8A2C8'  }}>
+          Input your dream details below to get your dream interpreted!
         </Text>
         <TextInput
           placeholder="Enter your prompt for Gemini"
@@ -161,5 +165,29 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'blue',
     textDecorationLine: 'underline',
+  },
+  button: {
+    alignSelf: 'center', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  button2: {
+    alignSelf: 'flex-start', 
+    backgroundColor: '#C8A2C8',
+    paddingVertical: 8,
+    paddingHorizontal: 12, 
+    borderRadius: 5,
+  },
+  buttonText: {
+    fontSize: 18, 
+    color: 'white', 
+    fontWeight: 'bold',
+  },
+  buttonText2: {
+    fontSize: 15, 
+    color: 'white', 
+    fontWeight: 'bold',
   },
 });
