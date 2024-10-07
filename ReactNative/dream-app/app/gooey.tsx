@@ -41,15 +41,10 @@ export default function GooeyInterpretation(){
       return (
         <ScrollView style={{ flex: 1, padding: 20 }}>
           {/* Screen message */}
-          <View style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            marginBottom: 40,
-          }}>
-            <Text>Welcome to your Nocturnal Navigator App!</Text>
+          <View style={{ padding: 20 }}>
+            <Text>Welcome to the Dream Visual Interpretation Screen! Enjoy your Gooey Powered Dream Interpretation!</Text>
           </View>
-    
+
           {/* Disclaimer */}
           <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
             <Checkbox

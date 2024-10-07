@@ -44,7 +44,7 @@ export default function GeminiInterpretation() {
         alignItems: "center",
         marginBottom: 40,
       }}>
-        <Text>Enjoy your Gemini Powered Dream Interpretation!</Text>
+        <Text>Welcome to your Dream Interpretation Screen! Enjoy your Gemini Powered Dream Interpretation!</Text>
       </View>
 
       {/* Disclaimer */}
