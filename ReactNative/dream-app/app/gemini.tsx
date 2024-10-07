@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert,  Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
 import { textModel } from "../scripts/api-abstraction.js";
+import { useRouter } from 'expo-router';  
 
 
 export default function GeminiInterpretation() {
+
   const [geminiInput, setGeminiInput] = useState('');
   const [geminiOutput, setGeminiOutput] = useState('');
-
   const [disclaimerChecked, setDisclaimerChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);  
+  const router = useRouter();  
+
 
   const handleGemini = async () => {
     if (!disclaimerChecked) {
@@ -34,8 +38,46 @@ export default function GeminiInterpretation() {
     setIsLoading(false);
   };
 
+  const handleNavigate = (path: string) => {
+    setModalVisible(false); 
+    router.push(path);
+  };
+
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
+      <View style={{ marginVertical: 20 }}>
+          <Button title="Navigate to Pages" onPress={() => setModalVisible(true)} />
+      </View>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => setModalVisible(false)}
+      >
+      
+      <View style={styles.modalContainer}>
+        <View style={styles.modalContent}>
+          <Text style={styles.modalTitle}>Choose a Page</Text>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./')}>
+               <Text>Home</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gemini')}>
+               <Text>Gemini</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gooey')}>
+                <Text>Gooey</Text>
+            </TouchableOpacity>
+
+            <Button title="Close" onPress={() => setModalVisible(false)} />
+        </View>
+      </View>
+      </Modal>
+
+
       {/* Screen message */}
       <View style={{
         flex: 1,
@@ -79,3 +121,45 @@ export default function GeminiInterpretation() {
     </ScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  modalContainer: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: 'rgba(0, 0, 0, 0.5)',  
+  },
+  modalContent: {
+      width: 300,
+      padding: 20,
+      backgroundColor: 'white',
+      borderRadius: 10,
+  },
+  modalTitle: {
+      fontSize: 18,
+      marginBottom: 20,
+      textAlign: 'center',
+  },
+  pageButton: {
+      padding: 10,
+      marginBottom: 10,
+      backgroundColor: '#ddd',
+      alignItems: 'center',
+      borderRadius: 5,
+  },
+  interpretationContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 20,
+  },
+  normalText: {
+    fontSize: 16,
+    color: 'black',
+  },
+  linkText: {
+    fontSize: 16,
+    color: 'blue',
+    textDecorationLine: 'underline',
+  },
+});
