@@ -3,6 +3,7 @@ For the Streamlit deployment, follow the instructions in the README file within 
 For the ReactNative Expo App local deployment, follow these instructions:
 
 Prerequisites:
+
 Before you start, make sure you have the following installed:
 1. Install NVM:
    ```
