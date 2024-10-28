@@ -1,6 +1,7 @@
 -- Create a table for public profiles
 create table profiles (
   id uuid references auth.users not null primary key,
+  dreamScore INT,
   updated_at timestamp with time zone,
   username text unique,
   full_name text,
@@ -9,6 +10,20 @@ create table profiles (
 
   constraint username_length check (char_length(username) >= 3)
 );
+
+-- Create the Dream table
+CREATE TABLE Dream (
+    username VARCHAR(50),
+    time TIME NOT NULL,
+    date DATE NOT NULL,
+    input TEXT NOT NULL,
+    theme VARCHAR(100),
+    rating INT CHECK (rating BETWEEN 1 AND 5), -- Assuming rating is between 1 and 5
+    PRIMARY KEY (username, time, date), -- Compound key
+    FOREIGN KEY (username) REFERENCES profiles(username)
+);
+
+
 -- Set up Row Level Security (RLS)
 -- See https://supabase.com/docs/guides/database/postgres/row-level-security for more details.
 alter table profiles
