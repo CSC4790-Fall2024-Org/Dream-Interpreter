@@ -1,20 +1,38 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from 'expo-router';
 import { Text, View, Button, ScrollView, Image, Modal, TouchableOpacity, StyleSheet } from "react-native";
+import { supabase } from '../supabase/supabase';
+import Auth from './Auth';
+import Account from './Account';
+import { Session } from '@supabase/supabase-js';
 
 export default function Index() {
-
   const [showUserManual, setShowUserManual] = useState(false); 
   const router = useRouter();
   const [modalVisible, setModalVisible] = useState(false);
+  const [session, setSession] = useState<Session | null>(null);
+
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session);
+    });
+
+    const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session);
+    });
+  }, []);
 
   const handleNavigate = (path: string) => {
-    setModalVisible(false); 
+    setModalVisible(false);
     router.push(path);
   };
 
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
+      <View>
+      {session && session.user ? <Account key={session.user.id} session={session} /> : <Auth />}
+      </View>
       {/* Navigate to Pages Button */}
       <TouchableOpacity
         onPress={() => setModalVisible(true)}
