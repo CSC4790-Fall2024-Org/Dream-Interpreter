@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.srken.dreamapp"
     },
     "web": {
       "bundler": "metro",
@@ -33,7 +34,7 @@
       "typedRoutes": true
     },
     "extra": {
-      "EXPO_ROUTER_APP_ROOT": "./app" 
+      "EXPO_ROUTER_APP_ROOT": "./app"
     }
   }
 }
