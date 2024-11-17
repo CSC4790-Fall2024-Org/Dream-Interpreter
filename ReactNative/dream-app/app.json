@@ -32,7 +32,8 @@
       "expo-router"
     ],
     "experiments": {
-      "typedRoutes": true
+      "typedRoutes": true,
+      "newArchEnabled": true
     },
     "extra": {
       "EXPO_ROUTER_APP_ROOT": "./app",

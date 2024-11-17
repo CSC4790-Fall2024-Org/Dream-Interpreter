@@ -24,7 +24,8 @@ export default function Index() {
   }, []);
 
   const handleNavigate = (path: string) => {
-    setModalVisible(false);
+    console.log("Navigating to:", path);
+    //setModalVisible(false);
     router.push(path);
   };
 
