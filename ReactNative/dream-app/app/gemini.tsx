@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Text, View, Button, TextInput, ScrollView, Alert,  Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
 import { textModel } from "../scripts/api-abstraction.js";
-import { RelativePathString, useRouter } from 'expo-router';  
+import { useRouter } from 'expo-router';  
 
 
 export default function GeminiInterpretation() {
@@ -38,7 +38,7 @@ export default function GeminiInterpretation() {
     setIsLoading(false);
   };
 
-  const handleNavigate = (path: RelativePathString) => {
+  const handleNavigate = (path: string) => {
     setModalVisible(false); 
     router.push(path);
   };
