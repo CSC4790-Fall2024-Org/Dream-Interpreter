@@ -72,9 +72,10 @@ export default function GeminiInterpretation() {
 
       // Insert the dream log into the database
       if (content) {
+        
         const { data, error } = await supabase
-          .from('Dream')
-          .upsert([
+          .from('dream')
+          .insert([
             {
               username: username || 'Unknown', // Fallback if username is null
               input: geminiInput,
@@ -85,15 +86,8 @@ export default function GeminiInterpretation() {
           ]);
 
           if (error) {
-            // Log detailed error information
             console.error('Error inserting into database:', error);
-            Alert.alert("Database Error", `Failed to save data: ${error.message}`);
-            console.log('Detailed Error Info:', {
-              code: error.code,
-              details: error.details,
-              hint: error.hint,
-              message: error.message
-            });
+            Alert.alert("Database Error", JSON.stringify(error, null, 2));
         } else {
           console.log('Dream log successfully inserted:', data);
         }
