@@ -74,7 +74,7 @@ export default function GeminiInterpretation() {
       if (content) {
         const { data, error } = await supabase
           .from('Dream')
-          .insert([
+          .upsert([
             {
               username: username || 'Unknown', // Fallback if username is null
               input: geminiInput,

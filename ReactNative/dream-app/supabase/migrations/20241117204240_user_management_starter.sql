@@ -55,6 +55,28 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute procedure public.handle_new_user();
 
+-- Create a trigger function
+CREATE OR REPLACE FUNCTION log_dream_changes()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Example: Insert a log entry into a 'dream_logs' table
+  -- You must have a 'dream_logs' table created beforehand
+  INSERT INTO Dream (username, input, output, date, time)
+  VALUES (
+    new.username, new.input, new.output, new.date, new.time             -- The action performed
+  );
+
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create a trigger to call the function after an INSERT operation on the Dream table
+CREATE TRIGGER dream_insert_trigger
+AFTER INSERT ON Dream
+FOR EACH ROW
+EXECUTE procedure log_dream_changes();
+
+
 -- Set up Storage!
 insert into storage.buckets (id, name)
   values ('avatars', 'avatars');
