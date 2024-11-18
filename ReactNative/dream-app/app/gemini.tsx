@@ -1,19 +1,44 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert,  Modal, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
 import { textModel } from "../scripts/api-abstraction.js";
-import { useRouter } from 'expo-router';  
-
+import { useRouter } from 'expo-router';
+import { supabase } from '../supabase/supabase';
 
 export default function GeminiInterpretation() {
-
   const [geminiInput, setGeminiInput] = useState('');
   const [geminiOutput, setGeminiOutput] = useState('');
   const [disclaimerChecked, setDisclaimerChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);  
-  const router = useRouter();  
+  const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
+  // Function to get user ID and username
+  const getUserData = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        console.error("Error fetching user:", error);
+        return { userId: null, username: null };
+      }
+
+      const { data, error: profileError } = await supabase
+        .from('profiles') // Replace with your table name
+        .select('username') // Replace 'username' with the actual column name for the username
+        .eq('id', user.id) // Replace 'user_id' with the correct foreign key column
+        .single();
+
+      if (profileError) {
+        console.error("Error fetching username:", profileError);
+        return { userId: user.id, username: null };
+      }
+
+      return { userId: user.id, username: data.username };
+    } catch (err) {
+      console.error("Unexpected error fetching user data:", err);
+      return { userId: null, username: null };
+    }
+  };
 
   const handleGemini = async () => {
     if (!disclaimerChecked) {
@@ -31,16 +56,53 @@ export default function GeminiInterpretation() {
       const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
       const content = await textModel(dreamPrompt);
       setGeminiOutput(content);
+
+      // Get user data
+      const { userId, username } = await getUserData();
+      if (!userId) {
+        Alert.alert("User Error", "Failed to fetch user information.");
+        setIsLoading(false);
+        return;
+      }
+
+    // Get the current date and time separately
+    const currentDate = new Date();
+    const date = currentDate.toLocaleDateString(); // e.g., "MM/DD/YYYY"
+    const time = currentDate.toLocaleTimeString(); // e.g., "HH:MM:SS AM/PM"
+
+      // Insert the dream log into the database
+      if (content) {
+        const { data, error } = await supabase
+          .from('Dream')
+          .insert([
+            {
+              username: username || 'Unknown', // Fallback if username is null
+              input: geminiInput,
+              output: content,
+              date: date,
+              time: time
+            }
+          ]);
+
+          if (error) {
+            // Log detailed error information
+            console.error('Error inserting into database:', error);
+            Alert.alert("Database Error", `Failed to save data: ${error.message}`);
+            console.log('Detailed Error Info:', {
+              code: error.code,
+              details: error.details,
+              hint: error.hint,
+              message: error.message
+            });
+        } else {
+          console.log('Dream log successfully inserted:', data);
+        }
+      }
     } catch (error) {
       console.error('Error generating Gemini content:', error);
       Alert.alert("Error", "Failed to generate content from Gemini API.");
     }
     setIsLoading(false);
-  };
-
-  const handleNavigate = (path: string) => {
-    setModalVisible(false); 
-    router.push(path);
   };
 
   return (
