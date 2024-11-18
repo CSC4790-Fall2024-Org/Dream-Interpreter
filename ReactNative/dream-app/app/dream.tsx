@@ -44,7 +44,8 @@ export default function DreamLogPage() {
         .from('dream')
         .select('*')
         .eq('username', fetchedUsername)
-        .order('date', { ascending: false });
+        .order('date', { ascending: false })
+        .order('time', { ascending: false });;
       if (dreamError) {
         console.error('Error fetching dream logs:', dreamError);
         return;
