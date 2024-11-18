@@ -14,9 +14,10 @@ create table profiles (
 -- Create the Dream table
 CREATE TABLE Dream (
     username VARCHAR(50),
-    time TIME NOT NULL,
-    date DATE NOT NULL,
+    time text NOT NULL,
+    date text NOT NULL,
     input TEXT NOT NULL,
+    output text not null,
     theme VARCHAR(100),
     rating INT CHECK (rating BETWEEN 1 AND 5), -- Assuming rating is between 1 and 5
     PRIMARY KEY (username, time, date), -- Compound key
