@@ -66,6 +66,10 @@ export default function Index() {
               <Text>Visual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
+            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./dream')}>
+              <Text>Dream Log Page</Text>
+            </TouchableOpacity>
+
             <Button title="Close" onPress={() => setModalVisible(false)} />
           </View>
         </View>
