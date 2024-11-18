@@ -14,9 +14,10 @@ create table profiles (
 -- Create the Dream table
 CREATE TABLE Dream (
     username VARCHAR(50),
-    time TIME NOT NULL,
-    date DATE NOT NULL,
+    time text NOT NULL,
+    date text NOT NULL,
     input TEXT NOT NULL,
+    output text not null,
     theme VARCHAR(100),
     rating INT CHECK (rating BETWEEN 1 AND 5), -- Assuming rating is between 1 and 5
     PRIMARY KEY (username, time, date), -- Compound key
@@ -68,3 +69,19 @@ create policy "Anyone can upload an avatar." on storage.objects
 
 create policy "Anyone can update their own avatar." on storage.objects
   for update using ((select auth.uid()) = owner) with check (bucket_id = 'avatars');
+
+create policy "Users can insert their dreams" on Dream
+for insert
+with check (
+  username = (select username from profiles where id = auth.uid())
+);
+
+ALTER TABLE Dream DISABLE ROW LEVEL SECURITY;
+
+create policy "Users can update their own dreams" on Dream
+for update
+using (username = auth.uid());
+
+create policy "Users can delete their own dreams" on Dream
+for delete
+using (username = auth.uid());

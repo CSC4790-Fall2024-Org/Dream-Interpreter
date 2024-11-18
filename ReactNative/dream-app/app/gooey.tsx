@@ -4,6 +4,8 @@ import Checkbox from "expo-checkbox";
 import { generateVideo } from "../scripts/api-abstraction.js";
 import { WebView } from 'react-native-webview';
 import { useRouter } from 'expo-router';  
+import { supabase } from '../supabase/supabase';
+
 
 
 export default function GooeyInterpretation(){
@@ -16,33 +18,102 @@ export default function GooeyInterpretation(){
   const [showWebView, setShowWebView] = useState(false); 
   const [modalVisible, setModalVisible] = useState(false);  
 
+  const getUserData = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        console.error("Error fetching user:", error);
+        return { userId: null, username: null };
+      }
+
+      const { data, error: profileError } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !data) {
+        console.error("Error fetching username from profiles:", profileError);
+        return { userId: user.id, username: null };
+      }
+
+      return { userId: user.id, username: data.username };
+    } catch (err) {
+      console.error("Unexpected error fetching user data:", err);
+      return { userId: null, username: null };
+    }
+  };
+  
   const handleGooey = async () => {
     if (!disclaimerChecked) {
       Alert.alert("Disclaimer", "You need to accept the disclaimer to proceed.");
       return;
     }
-    
+  
     if (dreamInput.trim() === '') {
       Alert.alert("Input Required", "Please enter your dream description.");
       return;
     }
-    
-        setIsLoading(true);
-        try {
-          const link = await generateVideo(dreamInput);
-          setAnimationLink(link);
-          setShowWebView(true); 
-        } catch (error) {
-          console.error('Error generating Gooey animation:', error);
-          Alert.alert("Error", "Failed to generate animation from Gooey API.");
-        }
-        setIsLoading(false);
-      };
+  
+    setIsLoading(true);
+    try {
+      // Generate the Gooey animation link
+      const link = await generateVideo(dreamInput);
+      console.log("Generated animation link:", link);  // Log to verify the link
 
-    const handleNavigate = (path: string) => {
-      setModalVisible(false); 
-      router.push(path);
-    };
+      if (!link) {
+        throw new Error("Animation link generation failed");
+      }
+
+      setAnimationLink(link);
+      setShowWebView(true);
+  
+      // Get user data
+      const { userId, username } = await getUserData();
+      if (!userId || !username) {
+        Alert.alert("User Error", "Failed to fetch user information.");
+        setIsLoading(false);
+        return;
+      }
+  
+      // Get the current date and time
+      const currentDate = new Date();
+      const date = currentDate.toISOString().split("T")[0];
+      const time = currentDate.toTimeString().split(" ")[0];
+  
+      // Insert the dream log into the database
+      const { data, error } = await supabase.from("dream").insert([
+        {
+          username: username,
+          input: dreamInput,
+          output: link,
+          date: date,
+          time: time,
+          theme: null,
+          rating: null,
+        },
+      ]);
+  
+      if (error) {
+        console.error("Error inserting into Dream table:", error);
+        Alert.alert("Database Error", `Failed to save the dream log: ${error.message}`);
+      } else {
+        console.log("Dream log successfully inserted:", data);
+        Alert.alert("Success", "Dream log successfully saved.");
+      }
+    } catch (error) {
+      console.error('Error generating Gooey animation:', error);
+      Alert.alert("Error", "Failed to generate animation from Gooey API.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleNavigate = (path: string) => {
+    setModalVisible(false); 
+    router.push(path);
+  };
+  
 
       return (
         <ScrollView style={{ flex: 1, padding: 20 }}>

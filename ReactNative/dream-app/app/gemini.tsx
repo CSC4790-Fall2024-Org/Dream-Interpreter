@@ -1,19 +1,47 @@
 import React, { useState } from "react";
-import { Text, View, Button, TextInput, ScrollView, Alert,  Modal, TouchableOpacity, StyleSheet } from "react-native";
+import { Text, View, Button, TextInput, ScrollView, Alert, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import Checkbox from "expo-checkbox";
 import { textModel } from "../scripts/api-abstraction.js";
-import { useRouter } from 'expo-router';  
-
+import { useRouter } from 'expo-router';
+import { supabase } from '../supabase/supabase';
 
 export default function GeminiInterpretation() {
-
   const [geminiInput, setGeminiInput] = useState('');
   const [geminiOutput, setGeminiOutput] = useState('');
   const [disclaimerChecked, setDisclaimerChecked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);  
-  const router = useRouter();  
+  const [modalVisible, setModalVisible] = useState(false);
+  const router = useRouter();
 
+  const getUserData = async () => {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) {
+        console.error("Error fetching user:", error);
+        return { userId: null, username: null };
+      }
+
+      console.log("Fetched user:", user);
+
+      const { data, error: profileError } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError || !data) {
+        console.error("Error fetching username from profiles:", profileError);
+        return { userId: user.id, username: null };
+      }
+
+      console.log("Fetched username:", data.username);
+
+      return { userId: user.id, username: data.username };
+    } catch (err) {
+      console.error("Unexpected error fetching user data:", err);
+      return { userId: null, username: null };
+    }
+  };
 
   const handleGemini = async () => {
     if (!disclaimerChecked) {
@@ -21,7 +49,7 @@ export default function GeminiInterpretation() {
       return;
     }
 
-    if (geminiInput.trim() === '') {
+    if (geminiInput.trim() === "") {
       Alert.alert("Input Required", "Please enter a prompt for Gemini.");
       return;
     }
@@ -31,18 +59,64 @@ export default function GeminiInterpretation() {
       const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
       const content = await textModel(dreamPrompt);
       setGeminiOutput(content);
+
+      // Get user data
+      const { userId, username } = await getUserData();
+      if (!userId || !username) {
+        Alert.alert("User Error", "Failed to fetch user information.");
+        setIsLoading(false);
+        return;
+      }
+
+      // Get the current date and time
+      const currentDate = new Date();
+      const date = currentDate.toLocaleDateString(); // e.g., "MM/DD/YYYY"
+      const time = currentDate.toLocaleTimeString(); // e.g., "HH:MM:SS AM/PM"
+
+      // Insert the dream log into the database
+      try {
+        const { data, error } = await supabase
+          .from("dream")
+          .insert([
+            {
+              username: username, // Now we are sure username is defined
+              input: geminiInput,
+              output: content,
+              date: date,
+              time: time,
+              theme: null, // Optional: Can be updated later
+              rating: null, // Optional: User can add rating later
+            },
+          ]);
+      
+        if (error) {
+          console.error("Error inserting into Dream table:", {
+            message: error.message,
+            code: error.code,
+            hint: error.hint,
+            details: error.details,
+          });
+          Alert.alert(
+            "Database Error",
+            `Failed to save the dream log: ${error.message}`
+          );
+        } else {
+          console.log("Dream log successfully inserted:", data);
+          Alert.alert("Success", "Dream log successfully saved.");
+        }
+      } catch (dbError) {
+        console.error("Unexpected error inserting into Dream table:", dbError);
+        Alert.alert("Error", "An unexpected error occurred while saving the dream.");
+      }
+      
     } catch (error) {
-      console.error('Error generating Gemini content:', error);
+      console.error("Error generating Gemini content:", error);
       Alert.alert("Error", "Failed to generate content from Gemini API.");
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   };
-
-  const handleNavigate = (path: string) => {
-    setModalVisible(false); 
-    router.push(path);
-  };
-
+  
   return (
     <ScrollView style={{ flex: 1, padding: 20 }}>
       {/* Navigate to Pages Button */}
@@ -61,26 +135,34 @@ export default function GeminiInterpretation() {
       >
       
       <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-          <Text style={styles.modalTitle}>Choose the page you want!</Text>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>Choose the page you want!</Text>
 
-            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./')}>
-               <Text>Home</Text>
+            <TouchableOpacity
+              style={styles.pageButton}
+              onPress={() => router.push("./")}
+            >
+              <Text>Home</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gemini')}>
-               <Text>Textual Dream Interpretation Page</Text>
+            <TouchableOpacity
+              style={styles.pageButton}
+              onPress={() => router.push("./gemini")}
+            >
+              <Text>Textual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./gooey')}>
-                <Text>Visual Dream Interpretation Page</Text>
+            <TouchableOpacity
+              style={styles.pageButton}
+              onPress={() => router.push("./gooey")}
+            >
+              <Text>Visual Dream Interpretation Page</Text>
             </TouchableOpacity>
 
             <Button title="Close" onPress={() => setModalVisible(false)} />
+          </View>
         </View>
-      </View>
       </Modal>
-
 
       {/* Screen message */}
       <View style={{
