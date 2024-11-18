@@ -20,62 +20,66 @@ export default function GeminiInterpretation() {
         console.error("Error fetching user:", error);
         return { userId: null, username: null };
       }
-  
+
+      console.log("Fetched user:", user);
+
       const { data, error: profileError } = await supabase
         .from("profiles")
         .select("username")
         .eq("id", user.id)
         .single();
-  
-      if (profileError) {
-        console.error("Error fetching username:", profileError);
+
+      if (profileError || !data) {
+        console.error("Error fetching username from profiles:", profileError);
         return { userId: user.id, username: null };
       }
-  
+
+      console.log("Fetched username:", data.username);
+
       return { userId: user.id, username: data.username };
     } catch (err) {
       console.error("Unexpected error fetching user data:", err);
       return { userId: null, username: null };
     }
   };
-  
+
   const handleGemini = async () => {
     if (!disclaimerChecked) {
       Alert.alert("Disclaimer", "You need to accept the disclaimer to proceed.");
       return;
     }
-  
+
     if (geminiInput.trim() === "") {
       Alert.alert("Input Required", "Please enter a prompt for Gemini.");
       return;
     }
-  
+
     setIsLoading(true);
     try {
       const dreamPrompt = `Please interpret the following dream: ${geminiInput}`;
       const content = await textModel(dreamPrompt);
       setGeminiOutput(content);
-  
+
       // Get user data
       const { userId, username } = await getUserData();
-      if (!userId) {
+      if (!userId || !username) {
         Alert.alert("User Error", "Failed to fetch user information.");
         setIsLoading(false);
         return;
       }
-  
+
       // Get the current date and time
       const currentDate = new Date();
       const date = currentDate.toLocaleDateString(); // e.g., "MM/DD/YYYY"
       const time = currentDate.toLocaleTimeString(); // e.g., "HH:MM:SS AM/PM"
-  
+
       // Insert the dream log into the database
       try {
         const { data, error } = await supabase
-          .from("Dream")
+          .from("dream")
           .insert([
             {
-              username: username || "Unknown", // Fallback if username is null
+              username: username, // Now we are sure username is defined
               input: geminiInput,
               output: content,
               date: date,
@@ -84,9 +88,14 @@ export default function GeminiInterpretation() {
               rating: null, // Optional: User can add rating later
             },
           ]);
-  
+      
         if (error) {
-          console.error("Error inserting into Dream table:", error);
+          console.error("Error inserting into Dream table:", {
+            message: error.message,
+            code: error.code,
+            hint: error.hint,
+            details: error.details,
+          });
           Alert.alert(
             "Database Error",
             `Failed to save the dream log: ${error.message}`
@@ -99,6 +108,7 @@ export default function GeminiInterpretation() {
         console.error("Unexpected error inserting into Dream table:", dbError);
         Alert.alert("Error", "An unexpected error occurred while saving the dream.");
       }
+      
     } catch (error) {
       console.error("Error generating Gemini content:", error);
       Alert.alert("Error", "Failed to generate content from Gemini API.");
@@ -153,8 +163,6 @@ export default function GeminiInterpretation() {
           </View>
         </View>
       </Modal>
-
-
 
       {/* Screen message */}
       <View style={{

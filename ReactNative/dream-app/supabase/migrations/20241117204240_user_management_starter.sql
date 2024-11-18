@@ -72,7 +72,11 @@ create policy "Anyone can update their own avatar." on storage.objects
 
 create policy "Users can insert their dreams" on Dream
 for insert
-with check (username = auth.uid());
+with check (
+  username = (select username from profiles where id = auth.uid())
+);
+
+ALTER TABLE Dream DISABLE ROW LEVEL SECURITY;
 
 create policy "Users can update their own dreams" on Dream
 for update
