@@ -147,6 +147,10 @@ export default function GooeyInterpretation(){
                     <Text>Visual Dream Interpretation Pag</Text>
                 </TouchableOpacity>
 
+                <TouchableOpacity style={styles.pageButton} onPress={() => handleNavigate('./dream')}>
+                    <Text>Dream Log Page</Text>
+                </TouchableOpacity>
+
                 <Button title="Close" onPress={() => setModalVisible(false)} />
               </View>
             </View>
