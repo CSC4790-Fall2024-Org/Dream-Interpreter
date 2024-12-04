@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList, ActivityIndicator } from 'react-native';
 import { supabase } from '../supabase/supabase';
-
 interface DreamLog {
   username: string;
   input: string;
@@ -11,16 +10,13 @@ interface DreamLog {
 //   theme: string;
 //   rating: number;
 }
-
 export default function DreamLogPage() {
   const [dreamLogs, setDreamLogs] = useState<DreamLog[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [username, setUsername] = useState<string | null>(null);
-
   useEffect(() => {
     getUsernameAndFetchDreams();
   }, []);
-
   // Function to fetch the signed-in user's username
   const getUsernameAndFetchDreams = async () => {
     setLoading(true);
@@ -31,34 +27,29 @@ export default function DreamLogPage() {
         console.error('Error fetching user:', userError);
         return;
       }
-
       // Fetch the username from the 'profiles' table
       const { data, error } = await supabase
         .from('profiles')
         .select('username')
         .eq('id', user.id)
         .single();
-
       if (error || !data) {
         console.error('Error fetching username:', error);
         return;
       }
-
       const fetchedUsername = data.username;
       setUsername(fetchedUsername);
-
       // Fetch the dream logs for the signed-in user's username
       const { data: dreamData, error: dreamError } = await supabase
         .from('dream')
         .select('*')
         .eq('username', fetchedUsername)
-        .order('date', { ascending: false });
-
+        .order('date', { ascending: false })
+        .order('time', { ascending: false });;
       if (dreamError) {
         console.error('Error fetching dream logs:', dreamError);
         return;
       }
-
       if (dreamData) {
         setDreamLogs(dreamData);
       }
@@ -68,7 +59,6 @@ export default function DreamLogPage() {
       setLoading(false);
     }
   };
-
   const renderDreamLog = ({ item }: { item: DreamLog }) => (
     <View style={styles.dreamLogContainer}>
       <Text style={styles.username}>{item.username}</Text>
@@ -79,7 +69,6 @@ export default function DreamLogPage() {
       <Text style={styles.output}>{item.output}</Text>
     </View>
   );
-
   if (loading) {
     return (
       <View style={styles.loaderContainer}>
@@ -87,7 +76,6 @@ export default function DreamLogPage() {
       </View>
     );
   }
-
   return (
     <View style={styles.container}>
       <Text style={styles.title}>My Dream Log</Text>
@@ -100,7 +88,6 @@ export default function DreamLogPage() {
     </View>
   );
 }
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
