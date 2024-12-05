@@ -21,8 +21,6 @@ export default function GeminiInterpretation() {
         return { userId: null, username: null };
       }
 
-      console.log("Fetched user:", user);
-
       const { data, error: profileError } = await supabase
         .from("profiles")
         .select("username")
@@ -33,8 +31,6 @@ export default function GeminiInterpretation() {
         console.error("Error fetching username from profiles:", profileError);
         return { userId: user.id, username: null };
       }
-
-      console.log("Fetched username:", data.username);
 
       return { userId: user.id, username: data.username };
     } catch (err) {
@@ -70,8 +66,8 @@ export default function GeminiInterpretation() {
 
       // Get the current date and time
       const currentDate = new Date();
-      const date = currentDate.toLocaleDateString(); // e.g., "MM/DD/YYYY"
-      const time = currentDate.toLocaleTimeString(); // e.g., "HH:MM:SS AM/PM"
+      const date = currentDate.toLocaleDateString();
+      const time = currentDate.toLocaleTimeString();
 
       // Insert the dream log into the database
       try {
@@ -79,29 +75,22 @@ export default function GeminiInterpretation() {
           .from("dream")
           .insert([
             {
-              username: username, // Now we are sure username is defined
+              username: username,
               input: geminiInput,
               output: content,
               date: date,
               time: time,
-              theme: null, // Optional: Can be updated later
-              rating: null, // Optional: User can add rating later
+              theme: null,
+              rating: null,
             },
           ]);
       
         if (error) {
-          console.error("Error inserting into Dream table:", {
-            message: error.message,
-            code: error.code,
-            hint: error.hint,
-            details: error.details,
-          });
           Alert.alert(
             "Database Error",
             `Failed to save the dream log: ${error.message}`
           );
         } else {
-          console.log("Dream log successfully inserted:", data);
           Alert.alert("Success", "Dream log successfully saved.");
         }
       } catch (dbError) {
@@ -116,16 +105,16 @@ export default function GeminiInterpretation() {
       setIsLoading(false);
     }
   };
-  
+
   return (
-    <ScrollView style={{ flex: 1, padding: 20 }}>
+    <ScrollView style={styles.container}>
       {/* Navigate to Pages Button */}
       <TouchableOpacity
-            onPress={() => setModalVisible(true)}
-            style={styles.button} 
-          >
-            <Text style={styles.buttonText}>All Pages</Text>
-          </TouchableOpacity>
+        onPress={() => setModalVisible(true)}
+        style={styles.button}
+      >
+        <Text style={styles.buttonText}>All Pages</Text>
+      </TouchableOpacity>
 
       <Modal
         animationType="slide"
@@ -133,8 +122,7 @@ export default function GeminiInterpretation() {
         visible={modalVisible}
         onRequestClose={() => setModalVisible(false)}
       >
-      
-      <View style={styles.modalContainer}>
+        <View style={styles.modalContainer}>
           <View style={styles.modalContent}>
             <Text style={styles.modalTitle}>Choose the page you want!</Text>
 
@@ -142,73 +130,89 @@ export default function GeminiInterpretation() {
               style={styles.pageButton}
               onPress={() => router.push("./")}
             >
-              <Text>Home</Text>
+              <Text style={styles.pageButtonText}>Home</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.pageButton}
               onPress={() => router.push("./gemini")}
             >
-              <Text>Textual Dream Interpretation Page</Text>
+              <Text style={styles.pageButtonText}>Textual Interpretation Page</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.pageButton}
               onPress={() => router.push("./gooey")}
             >
-              <Text>Visual Dream Interpretation Page</Text>
+              <Text style={styles.pageButtonText}>Visual Interpretation Page</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.pageButton}
               onPress={() => router.push("./dream")}
             >
-              <Text>Dream Log Page</Text>
+              <Text style={styles.pageButtonText}>Dream Log Page</Text>
             </TouchableOpacity>
 
-            <Button title="Close" onPress={() => setModalVisible(false)} />
+            <TouchableOpacity
+              style={styles.closeButton}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.closeButtonText}>Close</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
-      {/* Screen message */}
-      <View style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 40,
-      }}>
-        <Text>Welcome to your Dream Interpretation Screen! Enjoy your Gemini Powered Dream Interpretation!</Text>
+      {/* Welcome Message */}
+      <View style={styles.welcomeSection}>
+        <Text style={styles.welcomeText}>Welcome to your Dream Interpretation Screen!</Text>
+        <Text style={styles.subText}>Enjoy your Gemini AI Powered Dream Interpretation</Text>
       </View>
 
-      {/* Disclaimer */}
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 10 }}>
-        <Checkbox
-          value={disclaimerChecked}
-          onValueChange={setDisclaimerChecked}
-        />
-        <Text> I fully acknowledge that this is for entertainment only!</Text>
+      {/* Enhanced "I fully acknowledge" Checkbox Section */}
+      <View style={styles.disclaimerSection}>
+        <TouchableOpacity
+          style={[
+            styles.checkboxContainer,
+            {
+              borderColor: disclaimerChecked ? "#FF69B4" : "#ccc",
+              backgroundColor: disclaimerChecked ? "#FF69B4" : "transparent",
+            },
+          ]}
+          onPress={() => setDisclaimerChecked(!disclaimerChecked)}
+        >
+          <View
+            style={[
+              styles.customCheckbox,
+              { borderColor: disclaimerChecked ? "#FF69B4" : "#ccc" },
+            ]}
+          >
+            {disclaimerChecked && <View style={styles.checkmark} />}
+          </View>
+          <Text style={styles.disclaimerText}>I fully acknowledge that this is for entertainment only!</Text>
+        </TouchableOpacity>
       </View>
 
       {/* Gemini API Section */}
-      <View>
-        <Text style={{ fontSize: 18, fontWeight: "bold", marginBottom: 10, color:'#C8A2C8'  }}>
-          Input your dream details below to get your dream interpreted!
-        </Text>
+      <View style={styles.inputContainer}>
+        <Text style={styles.inputLabel}>Input your dream details below to get your dream interpreted!</Text>
         <TextInput
           placeholder="Enter your prompt for Gemini"
           value={geminiInput}
           onChangeText={setGeminiInput}
-          style={{
-            borderColor: "gray",
-            borderWidth: 1,
-            marginBottom: 10,
-            padding: 8,
-          }}
+          style={styles.input}
         />
-        <Button title={isLoading ? "Generating..." : "Generate Content"} onPress={handleGemini} disabled={isLoading} />
+        <TouchableOpacity
+          style={styles.actionButton}
+          onPress={handleGemini}
+          disabled={isLoading}
+        >
+          <Text style={styles.actionButtonText}>{isLoading ? "Generating..." : "Generate Content"}</Text>
+        </TouchableOpacity>
+
         {geminiOutput ? (
-          <Text style={{ marginTop: 20 }}>Generated Content: {geminiOutput}</Text>
+          <Text style={styles.outputText}>Generated Content: {geminiOutput}</Text>
         ) : null}
       </View>
     </ScrollView>
@@ -216,67 +220,155 @@ export default function GeminiInterpretation() {
 }
 
 const styles = StyleSheet.create({
-  modalContainer: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',  
-  },
-  modalContent: {
-      width: 300,
-      padding: 20,
-      backgroundColor: 'white',
-      borderRadius: 10,
-  },
-  modalTitle: {
-      fontSize: 18,
-      marginBottom: 20,
-      textAlign: 'center',
-  },
-  pageButton: {
-      padding: 10,
-      marginBottom: 10,
-      backgroundColor: '#ddd',
-      alignItems: 'center',
-      borderRadius: 5,
-  },
-  interpretationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 20,
-  },
-  normalText: {
-    fontSize: 16,
-    color: 'black',
-  },
-  linkText: {
-    fontSize: 16,
-    color: 'blue',
-    textDecorationLine: 'underline',
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: "#FFE4E1", // Light pink background
   },
   button: {
-    alignSelf: 'center', 
-    backgroundColor: '#C8A2C8',
+    marginVertical: 15,
+    backgroundColor: "#FF69B4",
     paddingVertical: 8,
-    paddingHorizontal: 12, 
-    borderRadius: 5,
-  },
-  button2: {
-    alignSelf: 'flex-start', 
-    backgroundColor: '#C8A2C8',
-    paddingVertical: 8,
-    paddingHorizontal: 12, 
-    borderRadius: 5,
+    paddingHorizontal: 15,
+    borderRadius: 25,
+    alignItems: "center",
   },
   buttonText: {
-    fontSize: 18, 
-    color: 'white', 
-    fontWeight: 'bold',
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 14,
   },
-  buttonText2: {
-    fontSize: 15, 
-    color: 'white', 
-    fontWeight: 'bold',
+  modalContainer: {
+    flex: 1,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    width: 300,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#FF69B4",
+    textAlign: "center",
+    marginBottom: 15,
+  },
+  pageButton: {
+    backgroundColor: "#FFB6C1",
+    paddingVertical: 10,
+    paddingHorizontal: 15,
+    borderRadius: 5,
+    marginBottom: 10,
+    alignItems: "center",
+  },
+  pageButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  closeButton: {
+    marginTop: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    backgroundColor: "#FF69B4",
+    borderRadius: 5,
+  },
+  closeButtonText: {
+    color: "white",
+    fontWeight: "bold",
+  },
+  welcomeSection: {
+    marginVertical: 20,
+    alignItems: "center",
+  },
+  welcomeText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#FF69B4",
+  },
+  subText: {
+    fontSize: 16,
+    color: "#555",
+    marginTop: 5,
+  },
+  disclaimerSection: {
+    marginBottom: 20,
+    alignItems: "center",
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 10,
+    borderWidth: 2,
+    borderRadius: 30,
+    padding: 12,
+    width: "80%",
+  },
+  customCheckbox: {
+    width: 20,
+    height: 20,
+    borderWidth: 2,
+    borderRadius: 5,
+    marginRight: 10,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  checkmark: {
+    width: 12,
+    height: 12,
+    backgroundColor: "#FF69B4",
+    borderRadius: 3,
+  },
+  disclaimerText: {
+    fontSize: 16,
+    color: "#555",
+    fontWeight: "600",
+  },
+  inputContainer: {
+    marginTop: 20,
+    padding: 20,
+    backgroundColor: "#FFF",
+    borderRadius: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+  },
+  inputLabel: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginBottom: 15,
+    color: "#FF69B4",
+  },
+  input: {
+    height: 50,
+    borderColor: "#ccc",
+    borderWidth: 1,
+    borderRadius: 10,
+    paddingLeft: 15,
+    marginBottom: 20,
+  },
+  actionButton: {
+    backgroundColor: "#FF69B4",
+    paddingVertical: 12,
+    paddingHorizontal: 30,
+    borderRadius: 30,
+    alignItems: "center",
+    marginTop: 10,
+  },
+  actionButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "white",
+  },
+  outputText: {
+    marginTop: 20,
+    fontSize: 16,
+    color: "#555",
+    textAlign: "center",
   },
 });
