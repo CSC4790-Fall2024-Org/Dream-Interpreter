@@ -70,7 +70,6 @@ export default function Index() {
               <Text>Dream Log Page</Text>
             </TouchableOpacity>
 
-
             <Button title="Close" onPress={() => setModalVisible(false)} />
           </View>
         </View>
